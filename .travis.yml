@@ -14,16 +14,18 @@ env:
     - DOCKER_VERSION: 19.03.6
 
 install:
-  - pip install coveralls
+  - pip install codecov
 
 script:
-  - python -m unittest discover -v -p services/web/test_*.py
+  - python -m unittest discover 
+  - coverage erase
+  - coverage run test_webapp.py && coverage html
 
 after_success:
-  - coverage combine --append && coveralls
+  - codecov
   - if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then
         make build-tag-push;
-    fi   
+    fi  
 
 
 #deploy:
