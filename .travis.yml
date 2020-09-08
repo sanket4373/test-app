@@ -1,0 +1,46 @@
+sudo: required
+
+language: python
+
+python:
+  - '3.6'
+
+services:
+  - docker
+
+env:
+  global:
+    - DOCKER_COMPOSE_VERSION: 1.26.2
+    - DOCKER_VERSION: 19.03.6
+
+before_install:
+  - sudo apt-get -qq update
+  - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-engine
+  - sudo docker --version
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+  - which docker-compose
+  - docker-compose --version
+
+install:
+  - pip install coveralls
+
+script:
+  - python -m unittest discover -v -p services/web/test_*.py
+
+after_success:
+  - coverage combine --append && coveralls
+  - if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then
+        make build-tag-push;
+    fi   
+
+
+#deploy:
+#  provider: script
+#  skip_cleanup: true
+#  script: make deploy
+#  on:
+#    branch: master
+#    condition: $TRAVIS_PULL_REQUEST = false
