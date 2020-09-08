@@ -1,0 +1,18 @@
+[run]
+branch = true
+data_file = .coverage
+source = ./test-app
+
+[paths]
+source =
+	./test-app
+	/project/test-app
+
+[report]
+show_missing = true
+skip_covered = false
+precision = 2
+
+[html]
+title = Coverage HTML Report
+directory = htmlcov
