@@ -18,7 +18,7 @@ install:
   - pip install codecov
 
 script:
-  - python -m unittest discover -p services/web/test_*.py 
+  - python -m unittest services.web.test_cases 
   - coverage erase
   - coverage run services/web/test_cases.py && coverage html
 
