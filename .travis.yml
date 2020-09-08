@@ -14,10 +14,11 @@ env:
     - DOCKER_VERSION: 19.03.6
 
 install:
+  - pip install -r requirements.txt
   - pip install codecov
 
 script:
-  - python -m unittest discover 
+  - python -m unittest discover -p services/web/test_*.py 
   - coverage erase
   - coverage run services/web/test_cases.py && coverage html
 
