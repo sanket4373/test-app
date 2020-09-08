@@ -19,7 +19,7 @@ install:
 script:
   - python -m unittest discover 
   - coverage erase
-  - coverage run test_webapp.py && coverage html
+  - coverage run services/web/test_cases.py && coverage html
 
 after_success:
   - codecov
